@@ -38,7 +38,7 @@ body:
     attributes:
       label: Версия сервера и ItemsAdder
       description: Вывод /version и /version ItemsAdder
-      placeholder: "Paper 1.21.10-xxx, ItemsAdder 4.0.x"
+      placeholder: "Paper 26.3 build xxx, ItemsAdder 4.0.x"
   - type: textarea
     id: steps
     attributes:

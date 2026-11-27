@@ -1,0 +1,41 @@
+name: Идея
+description: Улучшить существующий предмет, команды или конфиг
+title: "[Идея] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Для совершенно нового предмета используйте шаблон «Новый предмет».
+  - type: dropdown
+    id: part
+    attributes:
+      label: Что улучшить
+      options:
+        - Существующий предмет
+        - Команды
+        - config.yml
+        - Связка с ItemsAdder
+        - Другое
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: id предмета
+      description: Если идея про конкретный предмет
+      placeholder: "avian_weapon"
+  - type: textarea
+    id: problem
+    attributes:
+      label: Что сейчас неудобно
+      description: Какую задачу хочется решить
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Как это могло бы работать
+      description: Опишите своими словами; можно приложить картинку или набросок
+    validations:
+      required: true

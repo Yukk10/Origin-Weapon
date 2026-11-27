@@ -1,0 +1,86 @@
+name: Баг
+description: Предмет или команда работает не так, как должно
+title: "[Баг] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо, что сообщаете о проблеме! Чем подробнее опишете — тем быстрее починим.
+  - type: dropdown
+    id: part
+    attributes:
+      label: Где проблема
+      options:
+        - Механика предмета
+        - Команды (/originweapon, /ow)
+        - config.yml (не применяется, сбрасывается, ошибка загрузки)
+        - Связка с ItemsAdder (предмет не распознаётся / не выдаётся)
+        - Не знаю
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: id предмета
+      description: Если проблема с конкретным предметом — его id из config.yml (items.<id>) или /ow list
+      placeholder: "avian_weapon"
+  - type: input
+    id: version
+    attributes:
+      label: Версия плагина
+      description: Видна в имени файла в папке plugins, например Origin-Weapon-0.1.0.jar, или в /version OriginWeapon
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: Версия сервера и ItemsAdder
+      description: Вывод /version и /version ItemsAdder
+      placeholder: "Paper 1.21.10-xxx, ItemsAdder 4.0.x"
+  - type: textarea
+    id: steps
+    attributes:
+      label: Что делали
+      description: По шагам — какой предмет держали, что нажимали, какую команду вводили
+      placeholder: |
+        1. Выдал /ow give avian_weapon
+        2. Взял во вторую руку, прыгнул
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Что ожидали
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Что произошло на самом деле
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Ошибки из консоли
+      description: Кусок logs/latest.log с ошибкой (строки с OriginWeapon). Для подробностей можно включить debug true в config.yml
+      render: text
+  - type: textarea
+    id: config
+    attributes:
+      label: Секция config.yml
+      description: Секция items.<id> проблемного предмета, если вы её меняли
+      render: yaml
+  - type: textarea
+    id: media
+    attributes:
+      label: Скриншоты или видео
+      description: Можно перетащить файлы прямо сюда
+  - type: textarea
+    id: extra
+    attributes:
+      label: Дополнительно
+      description: Другие плагины (античит, плагины на полёт/прыжки), как часто повторяется

@@ -38,6 +38,11 @@ Paper 1.21.10, Java 21, Gradle (Kotlin DSL). Пакет: `dev.yukio.originweapon
 - `command/OriginWeaponCommand` — `/originweapon give|list|reload` (Brigadier, алиас `/ow`)
 - Таблицу предметов в README обновлять при добавлении каждого предмета
 
+## Issues
+
+Шаблоны в `.github/ISSUE_TEMPLATE/`: «Новый предмет» (метка `item`), «Баг» (`bug`),
+«Идея» (`enhancement`). Новый предмет из issue — отдельный PR с `Closes #N` в описании.
+
 ## Версии и релизы
 
 Процесс обновления: ветка → PR → мерж в `main` → workflow `release.yml` сам

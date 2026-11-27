@@ -23,12 +23,40 @@ Paper 1.21.10, Java 21, Gradle (Kotlin DSL). Пакет: `dev.yukio.originweapon
 дефолтного конфига дописываются в существующий файл, пользовательские значения
 не перезаписываются (поднимать `config-version` при изменении структуры).
 
-## Что ещё не сделано (каркас)
+## Каркас (готово)
 
-- `ItemRegistry` — регистрация предметов и их слушателей
-- обновление/мерж `config.yml`
-- команды `/originweapon give <id> [player]` и `/originweapon reload` (Brigadier)
-- таблица предметов в README — обновлять при добавлении каждого предмета
+- `OriginWeapon` — главный класс; новый предмет регистрировать в `onEnable()`
+  (`registry.register(new ...(this))`)
+- `item/ItemRegistry` — регистрация предметов; если предмет реализует `Listener`,
+  слушатель регистрируется автоматически; `loadAll()` перечитывает секции конфига
+- `item/AbstractOriginItem` — база предмета: `enabled`, `permission`, `name`, `lore`,
+  `material`, `itemsadder.{ids,give-id,override-name-lore}`, `matches()`, `createItem()`;
+  свои параметры предмет читает в `loadSettings()`
+- `hook/ItemsAdderHook` — ItemsAdder через рефлексию (softdepend, без compile-зависимости)
+- `effect/ParticleEffect`, `effect/SoundEffect` — списки частиц/звуков из конфига
+- `config/ConfigUpdater` — дописывает недостающие ключи с комментариями, делает `config.yml.bak`
+- `command/OriginWeaponCommand` — `/originweapon give|list|reload` (Brigadier, алиас `/ow`)
+- Таблицу предметов в README обновлять при добавлении каждого предмета
+
+## Issues
+
+Шаблоны в `.github/ISSUE_TEMPLATE/`: «Новый предмет» (метка `item`), «Баг» (`bug`),
+«Идея» (`enhancement`). Новый предмет из issue — отдельный PR с `Closes #N` в описании.
+
+## Версии и релизы
+
+Процесс обновления: ветка → PR → мерж в `main` → workflow `release.yml` сам
+собирает jar и публикует релиз `v<version>` (заметки генерируются из PR).
+Поэтому **в каждом PR с изменениями плагина поднимать `version` в
+`build.gradle.kts`** (SemVer, пока проект в 0.x):
+
+- patch (`0.1.0 → 0.1.1`) — исправления багов, правки дефолтных значений/текстов конфига
+- minor (`0.1.0 → 0.2.0`) — новый предмет, новая механика или новые параметры конфига
+- major (`→ 1.0.0`, далее `1.x → 2.0.0`) — несовместимые изменения: переименование/удаление
+  ключей конфига, id предметов, команд или прав
+
+Если версия не поднята, релиз не создаётся (в PR будет предупреждение CI).
+В описании PR указывать новую версию и почему выбран такой уровень.
 
 ## Сборка
 

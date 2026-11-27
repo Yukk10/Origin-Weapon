@@ -1,0 +1,64 @@
+name: Release
+
+# После мержа PR в main: берём версию из build.gradle.kts и, если релиза
+# с такой версией ещё нет, собираем jar и публикуем релиз v<версия>.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Версия из build.gradle.kts
+        id: version
+        run: |
+          VERSION=$(sed -nE 's/^version = "([^"]+)"/\1/p' build.gradle.kts)
+          if [ -z "$VERSION" ]; then
+            echo "::error::Не нашёл version в build.gradle.kts"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "::notice::Релиз v$VERSION уже есть — версия не поднята, релиз не создаётся."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-java@v4
+        if: steps.version.outputs.exists == 'false'
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.version.outputs.exists == 'false'
+        with:
+          gradle-version: "8.14.3"
+
+      - name: Сборка
+        if: steps.version.outputs.exists == 'false'
+        run: gradle build --no-daemon
+
+      - name: Публикация релиза
+        if: steps.version.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release create "v$VERSION" build/libs/Origin-Weapon-"$VERSION".jar \
+            --target "$GITHUB_SHA" \
+            --title "Origin-Weapon $VERSION" \
+            --generate-notes

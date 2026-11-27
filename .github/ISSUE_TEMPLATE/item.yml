@@ -1,0 +1,75 @@
+name: Новый предмет
+description: Идея нового предмета для расы — механика, эффекты, настройки
+title: "[Предмет] "
+labels: [item]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Опишите предмет так, как он должен работать в игре. Все числа (урон, радиус,
+        кулдауны, длительности), частицы и звуки потом можно менять в `config.yml`.
+  - type: input
+    id: race
+    attributes:
+      label: Раса
+      placeholder: "Авианы"
+    validations:
+      required: true
+  - type: input
+    id: itemsadder
+    attributes:
+      label: id предмета в ItemsAdder
+      description: "Как в конфиге ItemsAdder: id или namespace:id. Если предмета ещё нет — оставьте пустым"
+      placeholder: "avian_weapon"
+  - type: dropdown
+    id: trigger
+    attributes:
+      label: Когда срабатывает
+      multiple: true
+      options:
+        - Держит в основной руке
+        - Держит во второй руке
+        - Надет (броня)
+        - Лежит в инвентаре
+        - ПКМ
+        - ЛКМ / удар по существу
+        - Прыжок / присед
+        - Получение урона
+        - Другое (опишу ниже)
+    validations:
+      required: true
+  - type: textarea
+    id: mechanic
+    attributes:
+      label: Что делает
+      description: По шагам — что делает игрок и что происходит
+      placeholder: |
+        Держит в любой руке → прыгает → в воздухе прыгает ещё раз →
+        его подбрасывает на 4 блока вверх.
+    validations:
+      required: true
+  - type: textarea
+    id: effects
+    attributes:
+      label: Частицы и звуки
+      description: Какие частицы, звуки, где появляются
+      placeholder: "Облака (cloud / poof) под игроком, звук ветряного заряда"
+  - type: textarea
+    id: settings
+    attributes:
+      label: Что должно настраиваться в конфиге
+      description: Кроме стандартных enabled / имя / лор
+      placeholder: |
+        - высота прыжка
+        - перезарядка
+        - частицы и звук
+  - type: textarea
+    id: limits
+    attributes:
+      label: Ограничения
+      description: Где не должно работать, кулдаун, право, режимы игры, PvP и т.п.
+  - type: textarea
+    id: media
+    attributes:
+      label: Картинки, видео, примеры
+      description: Можно перетащить файлы прямо сюда

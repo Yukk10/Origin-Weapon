@@ -9,3 +9,6 @@ permissions:
   originweapon.admin:
     description: Админ-команды (выдача предметов, перезагрузка конфига)
     default: op
+
+softdepend:
+  - ItemsAdder

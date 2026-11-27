@@ -23,12 +23,20 @@ Paper 1.21.10, Java 21, Gradle (Kotlin DSL). Пакет: `dev.yukio.originweapon
 дефолтного конфига дописываются в существующий файл, пользовательские значения
 не перезаписываются (поднимать `config-version` при изменении структуры).
 
-## Что ещё не сделано (каркас)
+## Каркас (готово)
 
-- `ItemRegistry` — регистрация предметов и их слушателей
-- обновление/мерж `config.yml`
-- команды `/originweapon give <id> [player]` и `/originweapon reload` (Brigadier)
-- таблица предметов в README — обновлять при добавлении каждого предмета
+- `OriginWeapon` — главный класс; новый предмет регистрировать в `onEnable()`
+  (`registry.register(new ...(this))`)
+- `item/ItemRegistry` — регистрация предметов; если предмет реализует `Listener`,
+  слушатель регистрируется автоматически; `loadAll()` перечитывает секции конфига
+- `item/AbstractOriginItem` — база предмета: `enabled`, `permission`, `name`, `lore`,
+  `material`, `itemsadder.{ids,give-id,override-name-lore}`, `matches()`, `createItem()`;
+  свои параметры предмет читает в `loadSettings()`
+- `hook/ItemsAdderHook` — ItemsAdder через рефлексию (softdepend, без compile-зависимости)
+- `effect/ParticleEffect`, `effect/SoundEffect` — списки частиц/звуков из конфига
+- `config/ConfigUpdater` — дописывает недостающие ключи с комментариями, делает `config.yml.bak`
+- `command/OriginWeaponCommand` — `/originweapon give|list|reload` (Brigadier, алиас `/ow`)
+- Таблицу предметов в README обновлять при добавлении каждого предмета
 
 ## Сборка
 

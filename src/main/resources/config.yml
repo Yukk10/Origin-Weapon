@@ -1,24 +1,126 @@
 # ─────────────────────────────────────────────────────────────
 #  Origin-Weapon — настройки
-#  Новые предметы дописываются в этот файл автоматически при
-#  обновлении плагина. Уже изменённые значения не перезаписываются.
+#  Новые предметы и параметры дописываются в этот файл автоматически
+#  при обновлении плагина. Уже изменённые значения не перезаписываются
+#  (перед изменением файла сохраняется копия config.yml.bak).
+#  Применить изменения без рестарта: /originweapon reload
 # ─────────────────────────────────────────────────────────────
 
-config-version: 1
+# Версия структуры конфига. Не меняйте вручную.
+config-version: 2
 
 # Включить отладочные сообщения в консоль
 debug: false
 
+# Сообщения команд (MiniMessage). <prefix> подставляет messages.prefix.
+# Пустая строка — сообщение не отправляется.
+messages:
+  prefix: "<dark_gray>[<gradient:#7ad7ff:#c58bff>Origin-Weapon</gradient>]</dark_gray> "
+  reloaded: "<prefix><green>Конфиг перезагружен."
+  given: "<prefix><gray>Выдан <white><id></white> игроку <white><player></white>."
+  unknown-item: "<prefix><red>Предмет <white><id></white> не найден."
+  item-disabled: "<prefix><red>Предмет <white><id></white> выключен в config.yml."
+  player-only: "<prefix><red>Укажите игрока: /originweapon give <id> <игрок>"
+  list-header: "<prefix><gray>Предметы:"
+  list-entry-enabled: "<dark_gray> - <green><id>"
+  list-entry-disabled: "<dark_gray> - <red><id> <dark_gray>(выключен)"
+
 # Каждый предмет — отдельная секция по его id.
 # Общие поля для всех предметов:
-#   enabled   — true/false, полностью выключает предмет и его способности
-#   name      — имя предмета (MiniMessage)
-#   lore      — описание (MiniMessage, список строк)
-#   Остальные поля — параметры конкретного предмета (урон, кулдаун и т.д.)
-items: {}
-#  example_item:
-#    enabled: true
-#    name: "<gold>Пример"
-#    lore:
-#      - "<gray>Описание предмета"
-#    cooldown-seconds: 10
+#   enabled    — true/false, полностью выключает предмет и его способности
+#   permission — право для использования способностей ("" — у всех)
+#   name, lore — имя и описание (MiniMessage) для выдачи командой
+#   material   — запасной материал, если предмета ItemsAdder нет на сервере
+#   itemsadder — привязка к предмету ItemsAdder:
+#     ids                — id предметов ItemsAdder, считающихся этим предметом:
+#                          "id" (любой namespace) или "namespace:id"
+#     give-id            — что выдаёт /originweapon give ("" — первый из ids)
+#     override-name-lore — true: ставить name/lore из конфига и на предмет ItemsAdder
+#   Остальные поля — параметры конкретного предмета.
+items:
+
+  # ── Оружие авианов: двойной прыжок ───────────────────────────
+  # Держите предмет в основной или второй руке, прыгните и нажмите
+  # прыжок ещё раз в воздухе — игрока подбросит вверх.
+  avian_weapon:
+    enabled: true
+    permission: ""
+    name: "<#9fe3ff>Оружие авианов"
+    lore:
+      - "<gray>В любой руке даёт <white>двойной прыжок</white>."
+      - "<dark_gray>Прыжок → ещё раз прыжок в воздухе"
+    material: FEATHER
+    itemsadder:
+      ids:
+        - "avian_weapon"
+      give-id: ""
+      override-name-lore: false
+
+    # В какой руке предмет срабатывает
+    hands:
+      main-hand: true
+      off-hand: true
+
+    double-jump:
+      # На сколько блоков подбрасывает дополнительный прыжок
+      height: 4.0
+      # Сохранять горизонтальную скорость игрока (1.0 — полностью, 0 — прыжок строго вверх)
+      keep-momentum: 1.0
+      # Доп. толчок вперёд по взгляду (0 — нет; 0.3–0.6 — заметный рывок)
+      forward-boost: 0.0
+      # true — двойной прыжок только после обычного прыжка с земли;
+      # false — также при падении (например, сошёл с края блока)
+      require-ground-jump: true
+      # Перезарядка в тиках (20 тиков = 1 секунда). 0 — без перезарядки
+      cooldown-ticks: 0
+      # Сообщение в action bar во время перезарядки. <time> — секунды. "" — не показывать
+      cooldown-message: "<gray>Двойной прыжок через <white><time></white> сек."
+      # Сбрасывать накопленную высоту падения в момент двойного прыжка
+      # (урон от падения считается только от верхней точки второго прыжка)
+      reset-fall-distance: true
+      # Разрешить в воде и лаве
+      allow-in-water: false
+      # Режимы игры, в которых работает (SURVIVAL, ADVENTURE, CREATIVE)
+      gamemodes:
+        - SURVIVAL
+        - ADVENTURE
+
+    # Частицы под игроком при двойном прыжке
+    particles:
+      enabled: true
+      # Смещение по высоте от ног игрока
+      y-offset: 0.1
+      # Список эффектов. Поля:
+      #   type     — частица: CLOUD, POOF, GUST, WHITE_SMOKE, ... (или minecraft:<id>)
+      #   shape    — POINT (облако в точке) или RING (кольцо, разлетается наружу)
+      #   count    — количество частиц (для RING — точек на кольце)
+      #   radius   — радиус кольца (только RING)
+      #   offset-x/offset-y/offset-z — разброс частиц (только POINT)
+      #   speed    — скорость частиц
+      list:
+        - type: CLOUD
+          shape: RING
+          count: 18
+          radius: 0.5
+          speed: 0.12
+        - type: POOF
+          shape: POINT
+          count: 12
+          offset-x: 0.35
+          offset-y: 0.05
+          offset-z: 0.35
+          speed: 0.03
+
+    # Звуки при двойном прыжке
+    sounds:
+      enabled: true
+      # Список звуков. Поля:
+      #   key    — id звука (ванильный или из ресурспака ItemsAdder)
+      #   source — категория громкости: PLAYER, NEUTRAL, AMBIENT, MASTER, ...
+      #   volume — громкость
+      #   pitch  — высота 0.5–2.0
+      list:
+        - key: "minecraft:entity.wind_charge.wind_burst"
+          source: PLAYER
+          volume: 0.8
+          pitch: 1.2

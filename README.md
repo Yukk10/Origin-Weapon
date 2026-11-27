@@ -1,6 +1,6 @@
 # Origin-Weapon
 
-Paper-плагин (Minecraft 1.21.10, Java 21) с предметами и оружием для рас сервера.
+Paper-плагин (Minecraft 26.3, Java 25) с предметами и оружием для рас сервера.
 Каждый предмет — отдельный класс со своей механикой и своей секцией в `config.yml`.
 
 ## Возможности
@@ -33,7 +33,7 @@ Paper-плагин (Minecraft 1.21.10, Java 21) с предметами и ор�
 
 ```bash
 gradle build          # jar появится в build/libs/
-gradle runServer      # тестовый Paper-сервер 1.21.10
+gradle runServer      # тестовый Paper-сервер 26.3
 ```
 
 Сборка также запускается в GitHub Actions на каждый push — готовый jar лежит в артефактах.

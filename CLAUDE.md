@@ -1,6 +1,6 @@
 # Origin-Weapon — правила для работы над проектом
 
-Paper 1.21.10, Java 21, Gradle (Kotlin DSL). Пакет: `dev.yukio.originweapon`.
+Paper 26.3, Java 25, Gradle 9 (Kotlin DSL). Пакет: `dev.yukio.originweapon`.
 Общаемся и пишем комментарии/сообщения в конфиге на русском.
 
 ## Как устроен проект
@@ -60,5 +60,5 @@ Paper 1.21.10, Java 21, Gradle (Kotlin DSL). Пакет: `dev.yukio.originweapon
 
 ## Сборка
 
-Gradle wrapper не закоммичен: локально `gradle build` (или сгенерировать wrapper
+Gradle wrapper не закоммичен: локально `gradle build` (Gradle 9.x на Java 25) (или сгенерировать wrapper
 командой `gradle wrapper`). CI — `.github/workflows/build.yml`.

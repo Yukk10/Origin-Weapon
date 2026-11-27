@@ -1,7 +1,7 @@
 name: OriginWeapon
 version: '${version}'
 main: dev.yukio.originweapon.OriginWeapon
-api-version: '1.21.10'
+api-version: '26.3'
 description: Предметы и оружие для рас сервера
 author: Yukk10
 

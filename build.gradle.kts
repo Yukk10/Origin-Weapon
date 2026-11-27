@@ -1,11 +1,10 @@
 plugins {
     java
-    id("com.gradleup.shadow") version "8.3.5"
-    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("xyz.jpenilla.run-paper") version "3.1.0"
 }
 
 group = "dev.yukio"
-version = "0.1.0"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
@@ -13,11 +12,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.263-stable")
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 tasks {
@@ -29,14 +28,9 @@ tasks {
     }
     compileJava {
         options.encoding = "UTF-8"
-    }
-    shadowJar {
-        archiveClassifier.set("")
-    }
-    build {
-        dependsOn(shadowJar)
+        options.release.set(25)
     }
     runServer {
-        minecraftVersion("1.21.10")
+        minecraftVersion("26.3")
     }
 }
